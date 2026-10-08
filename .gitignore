@@ -1,0 +1,34 @@
+# NetBeans y archivos generados
+/build/
+/dist/
+/nbproject/private/
+*.class
+*.war
+
+# Dependencias locales descargadas por cada integrante
+/lib/*.jar
+
+# Respaldos, capturas y archivos multimedia del trabajo interno
+/Evaluacion_T2_Latam_respaldo*/
+/Evaluacion_T2_Latam_laboratorio/
+/media/
+/mdia/
+/capturas/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.docx
+*.pdf
+*.zip
+
+# Documentacion academica interna y material de evaluacion
+/Caso_Practico_*.docx
+/REQUERIMIENTOS.md
+/PLAN_TRABAJO_Y_DIAGNOSTICO.md
+
+# Configuracion local
+.env
+.env.*
+*.local

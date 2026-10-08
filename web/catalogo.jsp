@@ -1,0 +1,60 @@
+<%-- 
+    Document   : catalogo
+    Created on : 8/10/2026, 11:57:55 AM
+    Author     : Desiderio
+--%>
+
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Vuelos - LATAM</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .latam-header { background-color: #E30613; color: white; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark latam-header">
+        <a class="navbar-brand" href="catalogo"><b>LATAM Airlines</b> - Vuelos Disponibles</a>
+        <div class="ml-auto">
+            <a href="consulta" class="btn btn-light btn-sm">Consultar Mis Pasajes</a>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h2 class="mb-4 text-center">Seleccione su Vuelo</h2>
+        <table class="table table-striped table-bordered text-center">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nº Vuelo</th>
+                    <th>Origen</th>
+                    <th>Destino</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Precio (S/)</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%-- PISTA: Esta vista recibe datos del DAO. Revisa que el flujo no confie en un precio enviado por el navegador. --%>
+                <c:forEach var="v" items="${listaVuelos}">
+                    <tr>
+                        <td><b>${v.numeroVuelo}</b></td>
+                        <td>${v.origen}</td>
+                        <td>${v.destino}</td>
+                        <td>${v.fecha}</td>
+                        <td>${v.hora}</td>
+                        <td class="text-success font-weight-bold">S/ ${v.precio}</td>
+                        <td>
+                            <a href="compra?idVuelo=${v.idVuelo}" class="btn btn-danger btn-sm">Comprar</a>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
