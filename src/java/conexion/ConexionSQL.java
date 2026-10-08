@@ -15,6 +15,7 @@ import java.sql.SQLException;
  */
 public class ConexionSQL {
 
+    // Contraseña de prueba / no oficional
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=BD_LatamT2;user=sa;password=123;encrypt=false;";
 
     public static Connection getConexion() {
