@@ -1,6 +1,7 @@
 # NetBeans y archivos generados
 /build/
 /dist/
+/docs/
 /nbproject/private/
 *.class
 *.war
