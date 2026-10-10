@@ -18,17 +18,12 @@ public class ConexionSQL {
     // Contraseña de prueba / no oficional
     private static final String URL = "jdbc:sqlserver://localhost:1433;databaseName=BD_LatamT2;user=sa;password=123;encrypt=false;";
 
-    public static Connection getConexion() {
-
-        Connection cn = null;
-
+       public static Connection getConexion() throws SQLException {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            cn = DriverManager.getConnection(URL);
-        } catch (Exception e) {
-            System.err.println("Error de conexión; " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("No se encontro el driver JDBC de SQL Server.", e);
         }
-        return cn;
+        return DriverManager.getConnection(URL);
     }
-
 }
