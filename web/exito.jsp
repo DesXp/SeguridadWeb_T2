@@ -8,23 +8,19 @@
     <title>Compra Exitosa - LATAM</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        :root {
-            --latam-blue: #1b1464;
-            --latam-magenta: #e60046;
-        }
-
         .latam-card {
-            border-top: 5px solid var(--latam-magenta);
+            border-top: 5px solid #e60046;
         }
 
         .latam-title {
-            color: var(--latam-blue);
+            color: #1b1464;
         }
 
         .codigo-pasaje {
-            color: var(--latam-magenta);
+            color: #e60046;
             letter-spacing: 0.08em;
         }
+        
     </style>
 </head>
 <body class="bg-light">

@@ -9,19 +9,15 @@
     <title>Mis Pasajes - LATAM</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        :root {
-            --latam-blue: #1b1464;
-            --latam-magenta: #e60046;
-        }
 
         .latam-title {
-            color: var(--latam-blue);
+            color: #1b1464;
         }
 
         .btn-latam {
             color: #fff;
-            background-color: var(--latam-magenta);
-            border-color: var(--latam-magenta);
+            background-color: #e60046;
+            border-color: #e60046;
         }
 
         .btn-latam:hover {

@@ -48,12 +48,12 @@
                
                 <c:forEach var="v" items="${listaVuelos}">
                     <tr>
-                        <td><b>${v.numeroVuelo}</b></td>
-                        <td>${v.origen}</td>
-                        <td>${v.destino}</td>
-                        <td>${v.fecha}</td>
-                        <td>${v.hora}</td>
-                        <td class="text-success font-weight-bold">S/ ${v.precio}</td>
+                        <td><b><c:out value="${v.numeroVuelo}"/></b></td>
+                        <td><c:out value="${v.origen}"/></td>
+                        <td><c:out value="${v.destino}"/></td>
+                        <td><c:out value="${v.fecha}"/></td>
+                        <td><c:out value="${v.hora}"/></td>
+                        <td class="text-success font-weight-bold">S/ <c:out value="${v.precio}"/></td>
                         <td>
                             <a href="compra?idVuelo=${v.idVuelo}" class="btn btn-danger btn-sm">Comprar</a>
                         </td>
