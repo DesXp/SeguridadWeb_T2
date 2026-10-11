@@ -1,76 +1,173 @@
-<%-- 
-    Document   : consulta
-    Created on : 8/10/2026, 11:58:28 AM
-    Author     : Desiderio
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Consulta de Pasajes - LATAM</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mis Pasajes - LATAM</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        :root {
+            --latam-blue: #1b1464;
+            --latam-magenta: #e60046;
+        }
+
+        .latam-title {
+            color: var(--latam-blue);
+        }
+
+        .btn-latam {
+            color: #fff;
+            background-color: var(--latam-magenta);
+            border-color: var(--latam-magenta);
+        }
+
+        .btn-latam:hover {
+            color: #fff;
+            filter: brightness(0.92);
+        }
+
         @media print {
-            .no-print { display: none !important; }
-            body { background-color: white !important; }
+            @page {
+                size: landscape;
+                margin: 10mm;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            body {
+                background: #fff !important;
+            }
+
+            .container {
+                max-width: none !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .table-responsive {
+                overflow: visible !important;
+            }
+
+            .table {
+                width: 100% !important;
+                font-size: 11px;
+            }
+
+            body.printing-one .pasajes-table tbody tr {
+                display: none;
+            }
+
+            body.printing-one .pasajes-table tbody tr.print-target {
+                display: table-row;
+            }
         }
     </style>
 </head>
 <body class="bg-light">
-    <div class="container mt-4">
+    <div class="container mt-4 mb-5">
         <div class="no-print">
-            <%-- PISTA: Revisa como se imprime el DNI recibido y si necesita escape antes de volver a mostrarlo. --%>
-            <h2 class="text-center mb-4">Consulta de Pasajes por DNI</h2>
+            <h2 class="text-center latam-title mb-4">Mis Pasajes</h2>
+
             <form action="consulta" method="POST" class="form-inline justify-content-center mb-4">
-                <div class="form-group mr-2">
-                    <input type="text" name="dni" class="form-control" placeholder="Ingrese DNI (8 dígitos)" maxlength="8" value="${dniBuscado}" required>
+                <div class="form-group mr-2 mb-2">
+                    <label for="dni" class="sr-only">DNI</label>
+                    <input
+                        id="dni"
+                        type="text"
+                        name="dni"
+                        class="form-control"
+                        placeholder="Ingrese DNI (8 dígitos)"
+                        maxlength="8"
+                        minlength="8"
+                        pattern="[0-9]{8}"
+                        inputmode="numeric"
+                        value="${fn:escapeXml(dniBuscado)}"
+                        required>
                 </div>
-                <button type="submit" class="btn btn-danger">Consultar</button>
-                <a href="catalogo" class="btn btn-secondary ml-2">Volver al Catálogo</a>
+                <button type="submit" class="btn btn-latam mb-2">Consultar</button>
+                <a href="catalogo" class="btn btn-secondary ml-2 mb-2">Volver al Catálogo</a>
             </form>
 
             <c:if test="${not empty mensaje}">
-                <div class="alert alert-warning text-center col-md-6 offset-md-3">${mensaje}</div>
+                <div class="alert alert-warning text-center col-md-8 offset-md-2">
+                    <c:out value="${mensaje}"/>
+                </div>
             </c:if>
         </div>
 
         <c:if test="${not empty listaPasajes}">
-            <%-- PISTA: La consulta debe devolver unicamente registros asociados al DNI validado. --%>
-            <h4 class="text-center mb-3">Pasajes Encontrados</h4>
-            <table class="table table-bordered table-striped bg-white">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Código</th>
-                        <th>Pasajero</th>
-                        <th>DNI</th>
-                        <th>Vuelo</th>
-                        <th>Ruta</th>
-                        <th>Fecha y Hora</th>
-                        <th>Precio</th>
-                        <th class="no-print">Acción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach var="p" items="${listaPasajes}">
+            <h4 class="text-center mb-3 latam-title">Pasajes encontrados</h4>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped bg-white pasajes-table">
+                    <thead class="thead-dark">
                         <tr>
-                            <td><b>${p.codigo}</b></td>
-                            <td><c:out value="${p.pasajero.nombres} ${p.pasajero.apellidos}"/></td>
-                            <td>${p.pasajero.dni}</td>
-                            <td>${p.vuelo.numeroVuelo}</td>
-                            <td>${p.vuelo.origen} ➔ ${p.vuelo.destino}</td>
-                            <td>${p.vuelo.fecha} ${p.vuelo.hora}</td>
-                            <td>S/ ${p.precio}</td>
-                            <td class="no-print text-center">
-                                <button class="btn btn-sm btn-outline-dark" onclick="window.print()">Imprimir</button>
-                            </td>
+                            <th>Código</th>
+                            <th>Pasajero</th>
+                            <th>DNI</th>
+                            <th>Vuelo</th>
+                            <th>Origen</th>
+                            <th>Destino</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Precio</th>
+                            <th class="no-print">Acción</th>
                         </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="p" items="${listaPasajes}">
+                            <tr>
+                                <td><strong><c:out value="${p.codigo}"/></strong></td>
+                                <td>
+                                    <c:out value="${p.pasajero.nombres}"/>
+                                    <c:out value="${p.pasajero.apellidos}"/>
+                                </td>
+                                <td><c:out value="${p.pasajero.dni}"/></td>
+                                <td><c:out value="${p.vuelo.numeroVuelo}"/></td>
+                                <td><c:out value="${p.vuelo.origen}"/></td>
+                                <td><c:out value="${p.vuelo.destino}"/></td>
+                                <td><c:out value="${p.vuelo.fecha}"/></td>
+                                <td><c:out value="${p.vuelo.hora}"/></td>
+                                <td>S/ <c:out value="${p.precio}"/></td>
+                                <td class="no-print text-center">
+                                    <button type="button" class="btn btn-sm btn-outline-dark" onclick="imprimirPasaje(this)">
+                                        Imprimir
+                                    </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </c:if>
     </div>
+
+    <script>
+        function limpiarFilaImpresion() {
+            document.body.classList.remove('printing-one');
+            var fila = document.querySelector('.print-target');
+            if (fila) {
+                fila.classList.remove('print-target');
+            }
+        }
+
+        function imprimirPasaje(boton) {
+            limpiarFilaImpresion();
+            var fila = boton.closest('tr');
+            if (fila) {
+                fila.classList.add('print-target');
+                document.body.classList.add('printing-one');
+            }
+            window.print();
+        }
+
+        window.addEventListener('afterprint', limpiarFilaImpresion);
+    </script>
 </body>
 </html>
