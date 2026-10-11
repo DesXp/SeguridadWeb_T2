@@ -1,8 +1,4 @@
-<%-- 
-    Document   : catalogo
-    Created on : 8/10/2026, 11:57:55 AM
-    Author     : Desiderio
---%>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -24,8 +20,18 @@
             <a href="consulta" class="btn btn-light btn-sm">Consultar Mis Pasajes</a>
         </div>
     </nav>
+
     <div class="container mt-4">
+
+        <%-- Mensaje de error enviado por el Servlet --%>
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger">
+                <c:out value="${error}"/>
+            </div>
+        </c:if>
+
         <h2 class="mb-4 text-center">Seleccione su Vuelo</h2>
+
         <table class="table table-striped table-bordered text-center">
             <thead class="thead-dark">
                 <tr>
