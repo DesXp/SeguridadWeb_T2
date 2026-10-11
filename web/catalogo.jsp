@@ -45,7 +45,7 @@
                 </tr>
             </thead>
             <tbody>
-                <%-- PISTA: Esta vista recibe datos del DAO. Revisa que el flujo no confie en un precio enviado por el navegador. --%>
+               
                 <c:forEach var="v" items="${listaVuelos}">
                     <tr>
                         <td><b>${v.numeroVuelo}</b></td>
