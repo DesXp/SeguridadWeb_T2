@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package dao;
 
 import conexion.ConexionSQL;
@@ -11,44 +7,38 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.SQLException;
 
-/**
- *
- * @author Desiderio
- */
 public class PasajeroDAO {
 
-    public Pasajero obtenerPorDni(String dni) {
-        Pasajero p = null;
-        String sql = "SELECT id_pasajero, dni, nombres, apellidos, correo FROM Pasajero WHERE dni = ?";
-        try (Connection cn = ConexionSQL.getConexion();
-             PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setString(1, dni);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    p = new Pasajero();
-                    p.setIdPasajero(rs.getInt("id_pasajero"));
-                    p.setDni(rs.getString("dni"));
-                    p.setNombres(rs.getString("nombres"));
-                    p.setApellidos(rs.getString("apellidos"));
-                    p.setCorreo(rs.getString("correo"));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+  
+    public int guardar(Pasajero pasajero) throws SQLException {
+        try (Connection cn = ConexionSQL.getConexion()) {
+            return guardar(cn, pasajero);
         }
-        return p;
     }
 
-    public int guardar(Pasajero pasajero) {
-        Pasajero existente = obtenerPorDni(pasajero.getDni());
-        if (existente != null) {
-            return existente.getIdPasajero();
+    public int guardar(Connection cn, Pasajero pasajero) throws SQLException {
+        String sqlBuscar = "SELECT id_pasajero, dni, nombres, apellidos, correo "
+                + "FROM Pasajero WHERE dni = ?";
+        try (PreparedStatement ps = cn.prepareStatement(sqlBuscar)) {
+            ps.setString(1, pasajero.getDni());
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    pasajero.setIdPasajero(rs.getInt("id_pasajero"));
+                    pasajero.setDni(rs.getString("dni"));
+                    pasajero.setNombres(rs.getString("nombres"));
+                    pasajero.setApellidos(rs.getString("apellidos"));
+                    pasajero.setCorreo(rs.getString("correo"));
+                    return pasajero.getIdPasajero();
+                }
+            }
         }
 
-        String sql = "INSERT INTO Pasajero (dni, nombres, apellidos, correo) VALUES (?, ?, ?, ?)";
-        try (Connection cn = ConexionSQL.getConexion();
-             PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        String sqlInsertar = "INSERT INTO Pasajero (dni, nombres, apellidos, correo) "
+                + "VALUES (?, ?, ?, ?)";
+        try (PreparedStatement ps = cn.prepareStatement(
+                sqlInsertar, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, pasajero.getDni());
             ps.setString(2, pasajero.getNombres());
             ps.setString(3, pasajero.getApellidos());
@@ -56,12 +46,11 @@ public class PasajeroDAO {
             ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
-                    return rs.getInt(1);
+                    pasajero.setIdPasajero(rs.getInt(1));
+                    return pasajero.getIdPasajero();
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return 0;
+        throw new SQLException("No se pudo registrar al pasajero.");
     }
 }
