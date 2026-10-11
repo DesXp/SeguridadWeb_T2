@@ -17,7 +17,7 @@ public class VueloDAO {
     public List<Vuelo> listar() throws SQLException {
         List<Vuelo> lista = new ArrayList<>();
         String sql = "SELECT id_vuelo, numero_vuelo, origen, destino, fecha, hora, precio "
-                   + "FROM Vuelo WHERE fecha >= CAST(GETDATE() AS DATE) ORDER BY fecha, hora";
+                   + "FROM Vuelo WHERE fecha >= CAST(GETDATE() AS DATE) ORDER BY fecha, hora, id_vuelo";
         
        
         try (Connection cn = ConexionSQL.getConexion();
